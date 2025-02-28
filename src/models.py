@@ -15,7 +15,6 @@ class User(Base):
     lastname: Mapped[str] = mapped_column(nullable=False)
     email: Mapped[str] = mapped_column(nullable=False, unique=True)
     
-    # Relationships
     favorites = relationship("Favorite", back_populates="user")
 
 class Character(Base):
@@ -30,7 +29,6 @@ class Character(Base):
     hair_color: Mapped[str] = mapped_column()
     eye_color: Mapped[str] = mapped_column()
     
-    # Relationships
     favorites = relationship("Favorite", back_populates="character")
 
 class Planet(Base):
@@ -43,7 +41,6 @@ class Planet(Base):
     gravity: Mapped[str] = mapped_column()
     size: Mapped[str] = mapped_column()
     
-    # Relationships
     favorites = relationship("Favorite", back_populates="planet")
 
 class Favorite(Base):
@@ -54,7 +51,6 @@ class Favorite(Base):
     character_id: Mapped[int] = mapped_column(ForeignKey('character.id'), nullable=True)
     planet_id: Mapped[int] = mapped_column(ForeignKey('planet.id'), nullable=True)
     
-    # Relationships
     user = relationship("User", back_populates="favorites")
     character = relationship("Character", back_populates="favorites")
     planet = relationship("Planet", back_populates="favorites")
@@ -63,5 +59,4 @@ class Favorite(Base):
     def to_dict(self):
         return {}
 
-## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
