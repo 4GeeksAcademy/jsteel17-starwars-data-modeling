@@ -1,7 +1,7 @@
 import os
 import sys
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column, relationship
-from sqlalchemy import create_engine, String, ForeignKey
+from sqlalchemy import create_engine , ForeignKey, String
 from eralchemy2 import render_er
 
 Base = declarative_base()
@@ -22,11 +22,12 @@ class Character(Base):
     
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(nullable=False, unique=True)
-    birthday: Mapped[str] = mapped_column()
+    birth_year: Mapped[str] = mapped_column()
     gender: Mapped[str] = mapped_column()
     height: Mapped[str] = mapped_column()
-    weight: Mapped[str] = mapped_column()
+    mass: Mapped[str] = mapped_column()
     hair_color: Mapped[str] = mapped_column()
+    skin_color: Mapped[str] = mapped_column()
     eye_color: Mapped[str] = mapped_column()
     
     favorites = relationship("Favorite", back_populates="character")
@@ -36,10 +37,11 @@ class Planet(Base):
     
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(nullable=False, unique=True)
-    weather: Mapped[str] = mapped_column()
+    climate: Mapped[str] = mapped_column()
+    terrain: Mapped[str] = mapped_column()
     population: Mapped[str] = mapped_column()
     gravity: Mapped[str] = mapped_column()
-    size: Mapped[str] = mapped_column()
+    diameter: Mapped[str] = mapped_column()
     
     favorites = relationship("Favorite", back_populates="planet")
 
@@ -50,11 +52,10 @@ class Favorite(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
     character_id: Mapped[int] = mapped_column(ForeignKey('character.id'), nullable=True)
     planet_id: Mapped[int] = mapped_column(ForeignKey('planet.id'), nullable=True)
-    
+
     user = relationship("User", back_populates="favorites")
     character = relationship("Character", back_populates="favorites")
     planet = relationship("Planet", back_populates="favorites")
-
 
     def to_dict(self):
         return {}
